@@ -8,8 +8,30 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
-  config.vm.define :velo do |config|
-    config.vm.hostname = "velo"
+  config.vm.define :desktopX do |config|
+    config.vm.hostname = "desktopX"
+
+    # Every Vagrant virtual environment requires a box to build off of.
+    config.vm.box = "centos64_7"
+
+    # The url from where the 'config.vm.box' box will be fetched if it
+    # doesn't already exist on the user's system.
+    config.vm.box_url = "https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box"
+
+    # Create a private network, which allows host-only access to the machine
+    # using a static IP.
+    config.vm.network :private_network, ip: "172.28.128.4", :netmask => "255.255.0.0", adapter: 2
+    # Provision x via a shell script
+    config.vm.provision "shell", :path => "hello.sh" do |s| "bootstrap.sh"
+        s.args = "desktopX"
+    end
+  end
+
+  # All Vagrant configuration is done here. The most common configuration
+  # options are documented and commented below. For a complete reference,
+  # please see the online documentation at vagrantup.com.
+  config.vm.define :serverX do |config|
+    config.vm.hostname = "serverX"
 
     # Every Vagrant virtual environment requires a box to build off of.
     config.vm.box = "centos64_7"
@@ -23,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network :private_network, ip: "172.28.128.5", :netmask => "255.255.0.0", adapter: 2
     # Provision x via a shell script
     config.vm.provision "shell", :path => "hello.sh" do |s| "bootstrap.sh"
-        s.args = "hello"
+        s.args = "serverX"
     end
   end
 
